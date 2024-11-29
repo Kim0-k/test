@@ -1,1 +1,23 @@
+on:
+    push:
+      branches:
+        - master
 
+   
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - name: 'Login to Docker'
+        run: docker login --username ${{secrets.ANA_USERNAME}} --password ${{secrets.ANA_PASSWORD}}
+  
+      - name: 'Image Building'
+        run: docker build -t ${{secrets.ANA_USERNAME}}/iloveimages .
+
+      - name: 'Push image to Docker Hub'
+        run: docker push ${{secrets.ANA_USERNAME}}/iloveimages
